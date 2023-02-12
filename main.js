@@ -7,15 +7,14 @@ app.whenReady().then(() => {
         width: 800,
         height: 600,
         webPreferences: {
-            preload: path.join(__dirname, "preload.js")
+            // preload script runs in renderer
+            preload: path.join(__dirname, "preload.js"),
+
+            // allow using npm modules in renderer
+            nodeIntegration: true,
+            contextIsolation: false
         }
     });
-
-    ipcMain.on("set-title", (event, title) => {
-        const webContents = event.sender;
-        const window = BrowserWindow.fromWebContents(webContents);
-        window.setTitle(title);
-    })
 
     // load html view into browser
     window.loadFile("index.html");

@@ -2,12 +2,17 @@
   "name": "blocks",
   "version": "0.1.0",
   "description": "",
+
   "main": "main.js",
+  
   "scripts": {
     "start": "electron ."
   },
   "author": "Ell Torek",
   "devDependencies": {
     "electron": "^23.0.0"
+  },
+  "dependencies": {
+    "blockly": "^9.2.1"
   }
 }

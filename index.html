@@ -2,13 +2,18 @@
 <html>
     <head>
         <title>i am useing electron</title>
+
+        <link rel="stylesheet" href="./index.css">
     </head>
     <body>
         <h1>this is a heading</h1>
 
-        <button id="btn" type="button">
-            hello
-        </button>
+        <!-- blockly is injected from render script-->
+        <div id="blocklyDiv">
+
+        </div>
+
+        <!-- render script injects blockly into html doc -->
         <script src="./renderer.js"></script>
     </body>
 </html>
