@@ -1,6 +1,18 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    font-family: sans-serif;
+    overflow: hidden;
+}
+
+table {
+    height: 100%;
+    width: 100%;
+}
+
 #blocklyDiv {
-    height: 480px;
-    width: 600px;
-    
-    resize: both;
+    height: 99%;
 }

@@ -6,12 +6,16 @@
         <link rel="stylesheet" href="./index.css">
     </head>
     <body>
-        <h1>this is a heading</h1>
-
-        <!-- blockly is injected from render script-->
-        <div id="blocklyDiv">
-
-        </div>
+        <!-- tables are used to make blockly resizable -->
+        <table>
+            <tr>
+                <td>hello</td>
+            </tr>
+            <tr>
+                <!-- blockly is injected from render script -->
+                <div id="blocklyDiv"></div>
+            </tr>
+        </table>
 
         <!-- render script injects blockly into html doc -->
         <script src="./renderer.js"></script>
