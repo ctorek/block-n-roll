@@ -38,3 +38,19 @@ const workspace = Blockly.inject('blocklyDiv', {
     toolbox: toolbox,
     trashcan: true
 });
+
+// simulation button in header: referenced in html onclick
+function simBtn() {
+    console.log("todo: sim button impl");
+
+    // returning false prevents default behavior on link press
+    return false;
+}
+
+// deploy button in header: referenced in html onclick
+function depBtn() {
+    console.log("todo: deploy button impl");
+
+    // returning false prevents default behavior on link press
+    return false;
+}
