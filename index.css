@@ -8,11 +8,14 @@ body {
     overflow: hidden;
 }
 
-table {
-    height: 100%;
+.resizable {
+    margin-top: 3%;
+    margin-bottom: 0%;
+    height: 90%;
     width: 100%;
 }
 
 #blocklyDiv {
-    height: 99%;
+    height: 100%;
+    bottom: 0%;
 }
