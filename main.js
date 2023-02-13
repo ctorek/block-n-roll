@@ -4,8 +4,8 @@ const path = require("path");
 app.whenReady().then(() => {
     // create browser window
     const window = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1000,
+        height: 1000,
         webPreferences: {
             // preload script runs in renderer
             preload: path.join(__dirname, "preload.js"),

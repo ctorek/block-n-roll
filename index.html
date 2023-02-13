@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>i am useing electron</title>
+        <title>Block N' Roll</title>
 
         <link rel="stylesheet" href="./index.css">
     </head>
     <body>
-        <!-- TODO: header navbar thing????-->
+        <!-- navbar setting up using horizontal flexbox-->
+        <div class="navbar">
+            <div class="header">
+                <h3>Block N' Roll</h3>
+            </div>
+            <div class="btn" id="simBtn">Simulate</div>
+            <div class="btn" id="depBtn">Deploy</div>
+        </div>
 
-        <!-- div is used to make blockly resizable -->
+        <!-- automatically resizes using column flexbox -->
         <div class="resizable">
             <!-- blockly is injected from render script -->
             <div id="blocklyDiv"></div>
