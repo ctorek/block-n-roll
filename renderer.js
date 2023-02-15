@@ -39,18 +39,23 @@ const workspace = Blockly.inject('blocklyDiv', {
     trashcan: true
 });
 
-// simulation button in header: referenced in html onclick
-function simBtn() {
-    console.log("todo: sim button impl");
+// deploy button
+const deployBtn = document.getElementById("dep");
+deployBtn.addEventListener("click", () => {
+    console.log("DEPLOY");
+});
 
-    // returning false prevents default behavior on link press
-    return false;
-}
+// simulate button
+const simBtn = document.getElementById("sim");
+simBtn.addEventListener("click", () => {
 
-// deploy button in header: referenced in html onclick
-function depBtn() {
-    console.log("todo: deploy button impl");
+});
 
-    // returning false prevents default behavior on link press
-    return false;
-}
+// team number input
+const teamNumInput = document.getElementById("num");
+
+// robot wifi ssid input
+const ssidInput = document.getElementById("ssid");
+
+// robot connect button
+const connectBtn = document.getElementById("connect")

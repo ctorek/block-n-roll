@@ -13,10 +13,10 @@
             </div>
             <div class="btn" id="simBtn">
                 <!-- -->
-                <a id="sim" href="#" onclick="return simBtn();">Simulate</a>
+                <a id="sim" href="#">Simulate</a>
             </div>
             <div class="btn" id="depBtn">
-                <a id="dep" href="#" onclick="return depBtn();">Deploy</a>
+                <a id="dep" href="#">Deploy</a>
             </div>
         </div>
 
@@ -24,6 +24,21 @@
         <div class="resizable">
             <!-- blockly is injected from render script -->
             <div id="blocklyDiv"></div>
+        </div>
+
+        <div class="footer">
+            <!-- -->
+            <form novalidate>
+                <label for="num">Team Number:</label>
+                <input type="text" id="num" pattern="^[\d]{3,4}" minlength="2"><br>
+
+                <label for="ssid">Robot WiFi SSID:</label>
+                <select id="ssid">
+
+                </select>
+                
+                <button type="submit" id="">Connect</button>
+            </form>
         </div>
 
         <!-- render script injects blockly into html doc -->
