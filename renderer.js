@@ -43,12 +43,13 @@ const workspace = Blockly.inject('blocklyDiv', {
 const deployBtn = document.getElementById("dep");
 deployBtn.addEventListener("click", () => {
     console.log("DEPLOY");
+    // await window.networking.deploy()
 });
 
 // simulate button
 const simBtn = document.getElementById("sim");
 simBtn.addEventListener("click", () => {
-
+    // await window.networking.simulate()
 });
 
 // team number input
@@ -58,4 +59,7 @@ const teamNumInput = document.getElementById("num");
 const ssidInput = document.getElementById("ssid");
 
 // robot connect button
-const connectBtn = document.getElementById("connect")
+const connectBtn = document.getElementById("connect");
+connectBtn.addEventListener("click", () => {
+    // await window.networking.connect()
+});

@@ -2,6 +2,21 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 
 app.whenReady().then(() => {
+    // robot wifi connect from frontend
+    ipcMain.handle("connect", (ssid) => {
+
+    });
+
+    // deploy button from frontend
+    ipcMain.handle("deploy", (code) => {
+
+    });
+
+    // simulate button from frontend
+    ipcMain.handle("simulate", (code) => {
+
+    });
+
     // create browser window
     const window = new BrowserWindow({
         width: 1000,
