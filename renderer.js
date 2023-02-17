@@ -41,18 +41,32 @@ const workspace = Blockly.inject('blocklyDiv', {
     trashcan: true
 });
 
-// initialize dropdown options from available wifi networks
-ipcRenderer.invoke("networks").then((networks) => {
-    networks.forEach((network) => {
-        // generate option from ssid
-        var option = document.createElement("option");
-        option.setAttribute("value", network);
-        option.innerText = network;
+// update dropdown options w networks
+function updateNetworks() {
+    ipcRenderer.invoke("networks").then((networks) => {
+        // clear currently existing options
+        const ssid = document.getElementById("ssid")
+        while (ssid.firstChild) {
+            ssid.removeChild(ssid.firstChild);
+        }
 
-        // add option to dropdown
-        document.getElementById("ssid").appendChild(option);
-    });
-})
+        networks.forEach((network) => {
+            // do not include option if blank
+            if (network === "") return;
+
+            // generate option from ssid
+            var option = document.createElement("option");
+            option.setAttribute("value", network);
+            option.innerText = network;
+    
+            // add option to dropdown
+            document.getElementById("ssid").appendChild(option);
+        });
+    });    
+}
+
+// initialize dropdown options from available wifi networks on start
+updateNetworks();
 
 // deploy button
 const deployBtn = document.getElementById("dep");
@@ -72,9 +86,11 @@ const teamNumInput = document.getElementById("num");
 
 // robot wifi ssid input
 const ssidInput = document.getElementById("ssid");
+ssidInput.addEventListener("click", updateNetworks); 
 
 // robot connect button
 const connectBtn = document.getElementById("connect");
 connectBtn.addEventListener("click", () => {
-    // await window.networking.connect()
+    // connect to selected network
+    window.networking.connect(ssidInput.value);
 });

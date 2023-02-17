@@ -16,8 +16,12 @@ app.whenReady().then(() => {
     });
 
     // robot wifi connect from frontend
-    ipcMain.handle("connect", (ssid) => {
-        console.log("ipc connect");
+    ipcMain.handle("connect", async (ssid) => {
+        // todo: implement support for robot wifi networks w/ passwords
+        wifi.connect({ ssid: ssid }, () => {
+            // callback still might run even on connection fail on win
+            console.log(`Connected to ${ssid}`);
+        })
     });
 
     // deploy button from frontend
