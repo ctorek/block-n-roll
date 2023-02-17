@@ -1,39 +1,11 @@
 const Blockly = require("blockly");
 const pythonGen = require("blockly/python");
 
+// https://www.electronjs.org/docs/latest/tutorial/ipc
 const { ipcRenderer } = require("electron");
 
-// https://developers.google.com/blockly/guides/configure/web/toolbox
-const toolbox = {
-    "kind": "categoryToolbox",
-    "contents": [
-        {
-            "kind": "category",
-            "name": "Events",
-            "contents": []
-        },
-        {
-            "kind": "category",
-            "name": "Logic",
-            "contents": []
-        },
-        {
-            "kind": "category",
-            "name": "Math",
-            "contents": []
-        },
-        {
-            "kind": "category",
-            "name": "Motors",
-            "contents": []
-        },
-        {
-            "kind": "category",
-            "name": "Sensors",
-            "contents": []
-        }
-    ]
-}
+// blockly toolbox imported from another file
+const toolbox = require("./toolbox.js");
 
 // inject blockly into document
 const workspace = Blockly.inject('blocklyDiv', {
@@ -74,14 +46,13 @@ updateNetworks();
 // deploy button
 const deployBtn = document.getElementById("dep");
 deployBtn.addEventListener("click", () => {
-    console.log("DEPLOY");
-    // await window.networking.deploy()
+    ipcRenderer.invoke("deploy", "")
 });
 
 // simulate button
 const simBtn = document.getElementById("sim");
 simBtn.addEventListener("click", () => {
-    // await window.networking.simulate()
+    ipcRenderer.invoke("simulate", "");
 });
 
 // team number input
