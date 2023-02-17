@@ -9,24 +9,9 @@ wifi.init({
 
 app.whenReady().then(() => {
     // get available networks for dropdown
-    ipcMain.handle("networks", () => {
+    ipcMain.handle("networks", async () => {
         // available network ssids
-        var ssids = [];
-
-        // scan networks
-        wifi.scan((err, networks) => {
-            // no ssids if error
-            if (err) {
-                console.error(err);
-                return;
-            }
-
-            // add each ssid to list
-            for (var network in networks) {
-                ssids.push(network.ssid);
-            }
-        });
-        
+        var ssids = (await wifi.scan()).map((network) => network.ssid);
         return ssids;
     });
 

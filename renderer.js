@@ -1,6 +1,8 @@
 const Blockly = require("blockly");
 const pythonGen = require("blockly/python");
 
+const { ipcRenderer } = require("electron");
+
 // https://developers.google.com/blockly/guides/configure/web/toolbox
 const toolbox = {
     "kind": "categoryToolbox",
@@ -40,8 +42,17 @@ const workspace = Blockly.inject('blocklyDiv', {
 });
 
 // initialize dropdown options from available wifi networks
-var ssids = window.networking.networks();
-console.log(ssids);
+ipcRenderer.invoke("networks").then((networks) => {
+    networks.forEach((network) => {
+        // generate option from ssid
+        var option = document.createElement("option");
+        option.setAttribute("value", network);
+        option.innerText = network;
+
+        // add option to dropdown
+        document.getElementById("ssid").appendChild(option);
+    });
+})
 
 // deploy button
 const deployBtn = document.getElementById("dep");
