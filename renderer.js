@@ -39,6 +39,10 @@ const workspace = Blockly.inject('blocklyDiv', {
     trashcan: true
 });
 
+// initialize dropdown options from available wifi networks
+var ssids = window.networking.networks();
+console.log(ssids);
+
 // deploy button
 const deployBtn = document.getElementById("dep");
 deployBtn.addEventListener("click", () => {
