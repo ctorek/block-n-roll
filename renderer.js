@@ -46,13 +46,16 @@ function updateNetworks() {
     ipcRenderer.invoke("networks").then((networks) => {
         // clear currently existing options
         const ssid = document.getElementById("ssid")
-        while (ssid.firstChild) {
-            ssid.removeChild(ssid.firstChild);
+        while (ssid.childNodes[1]) {
+            ssid.removeChild(ssid.childNodes[1]);
         }
 
         networks.forEach((network) => {
             // do not include option if blank
             if (network === "") return;
+
+            // do not include option if same as selected
+            if (network === ssid.value) return;
 
             // generate option from ssid
             var option = document.createElement("option");
@@ -86,11 +89,19 @@ const teamNumInput = document.getElementById("num");
 
 // robot wifi ssid input
 const ssidInput = document.getElementById("ssid");
-ssidInput.addEventListener("click", updateNetworks); 
+
+const refreshBtn = document.getElementById("refresh");
+refreshBtn.addEventListener("click", (event) => {
+    event.preventDefault;
+    updateNetworks();
+});
 
 // robot connect button
 const connectBtn = document.getElementById("connect");
-connectBtn.addEventListener("click", () => {
+connectBtn.addEventListener("click", (event) => {
+    // prevent page refresh/submit
+    event.preventDefault();
+
     // connect to selected network
-    window.networking.connect(ssidInput.value);
+    ipcRenderer.invoke("connect", ssidInput.value);
 });

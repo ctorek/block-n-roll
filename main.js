@@ -9,14 +9,14 @@ wifi.init({
 
 app.whenReady().then(() => {
     // get available networks for dropdown
-    ipcMain.handle("networks", async () => {
+    ipcMain.handle("networks", async (event) => {
         // available network ssids
         var ssids = (await wifi.scan()).map((network) => network.ssid);
         return ssids;
     });
 
     // robot wifi connect from frontend
-    ipcMain.handle("connect", async (ssid) => {
+    ipcMain.handle("connect", async (event, ssid) => {
         // todo: implement support for robot wifi networks w/ passwords
         wifi.connect({ ssid: ssid }, () => {
             // callback still might run even on connection fail on win
@@ -25,12 +25,12 @@ app.whenReady().then(() => {
     });
 
     // deploy button from frontend
-    ipcMain.handle("deploy", (code) => {
+    ipcMain.handle("deploy", (event, code) => {
         console.log("ipc deploy");
     });
 
     // simulate button from frontend
-    ipcMain.handle("simulate", (code) => {
+    ipcMain.handle("simulate", (event, code) => {
         console.log("ipc sim");
     });
 
