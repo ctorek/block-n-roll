@@ -49,7 +49,7 @@ app.whenReady().then(() => {
     });
 
     // load html view into browser
-    window.loadFile("index.html");
+    window.loadFile("start.html");
 });
 
 // runs when all app windows are closed
