@@ -30,15 +30,14 @@ body {
 }
 
 .footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     padding: 10px;
 }
 
-.footer #ssid:invalid {
-    border: 1px solid red;
-}
-
-.footer #ssid:valid {
-    border: 1px solid black;
+.footer #buttons {
+    margin-left: auto;
 }
 
 #blocklyDiv {
