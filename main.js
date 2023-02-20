@@ -15,7 +15,17 @@ app.whenReady().then(() => {
         var result = await dialog.showOpenDialog(window, {
             properties: ["openDirectory"]
         });
-        console.log(result.filePaths);
+        
+        // don't continue to editor if no project is selected
+        if (result.filePaths[0] == null) return;
+
+        // perform some file io and get blockly serialized data
+
+        // open editor view
+        await window.loadFile("editor.html");
+
+        // send blockly data to frontend
+        window.webContents.send("blocklyLoad", "hello");
     });
 
     // get available networks for dropdown
@@ -46,7 +56,8 @@ app.whenReady().then(() => {
 
     // save workspace on window close
     ipcMain.handle("saveWorkspace", (event, workspace) => {
-        console.log("save workspace");
+        // TODO: save to file in current project dir
+        console.log(workspace);
     });
 
     // create browser window
