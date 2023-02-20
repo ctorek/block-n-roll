@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const path = require("path");
 const wifi = require("node-wifi");
 
@@ -7,7 +7,17 @@ wifi.init({
     iface: null // ???
 })
 
+let window;
+
 app.whenReady().then(() => {
+    // open project directory
+    ipcMain.handle("openDir", async (event, dir) => {
+        var result = await dialog.showOpenDialog(window, {
+            properties: ["openDirectory"]
+        });
+        console.log(result.filePaths);
+    });
+
     // get available networks for dropdown
     ipcMain.handle("networks", async (event) => {
         // available network ssids
@@ -34,8 +44,13 @@ app.whenReady().then(() => {
         console.log("ipc sim");
     });
 
+    // save workspace on window close
+    ipcMain.handle("saveWorkspace", (event, workspace) => {
+        console.log("save workspace");
+    });
+
     // create browser window
-    const window = new BrowserWindow({
+    window = new BrowserWindow({
         width: 1000,
         height: 1000,
         webPreferences: {

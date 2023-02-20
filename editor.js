@@ -46,17 +46,16 @@ updateNetworks();
 // deploy button
 const deployBtn = document.getElementById("dep");
 deployBtn.addEventListener("click", () => {
+    var code = pythonGen.workspaceToCode(workspace);
     ipcRenderer.invoke("deploy", "")
 });
 
 // simulate button
 const simBtn = document.getElementById("sim");
 simBtn.addEventListener("click", () => {
+    var code = pythonGen.workspaceToCode(workspace);
     ipcRenderer.invoke("simulate", "");
 });
-
-// team number input
-const teamNumInput = document.getElementById("num");
 
 // robot wifi ssid input
 const ssidInput = document.getElementById("ssid");
@@ -76,3 +75,9 @@ connectBtn.addEventListener("click", (event) => {
     // connect to selected network
     ipcRenderer.invoke("connect", ssidInput.value);
 });
+
+// save workspace before window close
+window.addEventListener("beforeunload", (event) => {
+    var saveData = Blockly.serialization.workspaces.save(workspace);
+    ipcRenderer.invoke("saveWorkspace", saveData);
+})
