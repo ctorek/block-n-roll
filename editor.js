@@ -43,8 +43,8 @@ function updateNetworks() {
 // blockly serialized data should only be sent once at start
 ipcRenderer.on("blocklyLoad", (event, data) => {
     // update workspace w deserialized data
-    console.log(data);
-    // Blockly.serialization.workspaces.load(data, workspace);
+    console.log(JSON.parse(data));
+    //Blockly.serialization.workspaces.load(JSON.parse(data), workspace);
 });
 
 // initialize dropdown options from available wifi networks on start
@@ -86,5 +86,5 @@ connectBtn.addEventListener("click", (event) => {
 // save workspace before window close
 window.addEventListener("beforeunload", (event) => {
     var saveData = Blockly.serialization.workspaces.save(workspace);
-    ipcRenderer.invoke("saveWorkspace", JSON.stringify(saveData));
+    ipcRenderer.invoke("save", JSON.stringify(saveData));
 })

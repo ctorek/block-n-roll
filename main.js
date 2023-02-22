@@ -13,10 +13,12 @@ let window;
 let blocklyFile;
 
 app.whenReady().then(() => {
-    // open project directory
-    ipcMain.handle("openDir", async (event, dir) => {
+    // open existing project
+    ipcMain.handle("open", async (event) => {
         // file select menu
-        var result = await dialog.showOpenDialog(window, {});
+        var result = await dialog.showOpenDialog(window, {
+            properties: ["openFile"]
+        });
         
         // don't continue to editor if no project is selected
         if (result.filePaths[0] == null) return;
@@ -38,6 +40,22 @@ app.whenReady().then(() => {
 
         // send blockly data to frontend
         window.webContents.send("blocklyLoad", workspace);
+    });
+
+    // create new project
+    ipcMain.handle("create", async (event) => {
+        var result = await dialog.showOpenDialog(window, {
+            properties: ["openDirectory"]
+        });
+
+        // don't redirect if no folder selected
+        if (result.filePaths[0] == null) return;
+
+        // set project location for save
+        blocklyFile = path.join(result.filePaths[0], "blockly.json");
+
+        // redirect to editor
+        await window.loadFile("editor.html");
     });
 
     // get available networks for dropdown
@@ -67,10 +85,17 @@ app.whenReady().then(() => {
     });
 
     // save workspace on window close
-    ipcMain.handle("saveWorkspace", (event, workspace) => {
+    ipcMain.handle("save", async (event, workspace) => {
         console.log(workspace);
         
-        // TODO: write w promises fs
+        // write workspace to project file
+        try {
+            await fs.writeFile(blocklyFile, JSON.stringify(workspace), { encoding: "utf-8" });
+        } catch (err) {
+            console.error(err);
+            return;
+        }
+        
     });
 
     // create browser window
