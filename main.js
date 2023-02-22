@@ -1,6 +1,8 @@
 const { app, BrowserWindow, ipcMain, dialog } = require("electron");
-const path = require("path");
 const wifi = require("node-wifi");
+
+const path = require("path");
+const fs = require("node:fs/promises");
 
 // initialize wifi interface
 wifi.init({
@@ -8,24 +10,34 @@ wifi.init({
 })
 
 let window;
+let blocklyFile;
 
 app.whenReady().then(() => {
     // open project directory
     ipcMain.handle("openDir", async (event, dir) => {
-        var result = await dialog.showOpenDialog(window, {
-            properties: ["openDirectory"]
-        });
+        // file select menu
+        var result = await dialog.showOpenDialog(window, {});
         
         // don't continue to editor if no project is selected
         if (result.filePaths[0] == null) return;
+        blocklyFile = result.filePaths[0];
 
         // perform some file io and get blockly serialized data
+        let workspace;
+        try {
+            workspace = await fs.readFile(blocklyFile, { encoding: "utf-8" });
+        } catch (err) {
+            console.error(err);
+            
+            // do not open editor if data does not load
+            return;
+        }
 
         // open editor view
         await window.loadFile("editor.html");
 
         // send blockly data to frontend
-        window.webContents.send("blocklyLoad", "hello");
+        window.webContents.send("blocklyLoad", workspace);
     });
 
     // get available networks for dropdown
@@ -56,8 +68,9 @@ app.whenReady().then(() => {
 
     // save workspace on window close
     ipcMain.handle("saveWorkspace", (event, workspace) => {
-        // TODO: save to file in current project dir
         console.log(workspace);
+        
+        // TODO: write w promises fs
     });
 
     // create browser window
