@@ -39,7 +39,7 @@ app.whenReady().then(() => {
         await window.loadFile("editor.html");
 
         // send blockly data to frontend
-        window.webContents.send("blocklyLoad", workspace);
+        window.webContents.send("blocklyLoad", JSON.parse(workspace));
     });
 
     // create new project
@@ -90,12 +90,13 @@ app.whenReady().then(() => {
         
         // write workspace to project file
         try {
-            await fs.writeFile(blocklyFile, JSON.stringify(workspace), { encoding: "utf-8" });
+            await fs.writeFile(blocklyFile, workspace, { encoding: "utf-8" });
         } catch (err) {
             console.error(err);
-            return;
+            return false;
         }
-        
+
+        return true;
     });
 
     // create browser window

@@ -43,8 +43,7 @@ function updateNetworks() {
 // blockly serialized data should only be sent once at start
 ipcRenderer.on("blocklyLoad", (event, data) => {
     // update workspace w deserialized data
-    console.log(JSON.parse(data));
-    //Blockly.serialization.workspaces.load(JSON.parse(data), workspace);
+    Blockly.serialization.workspaces.load(data, workspace);
 });
 
 // initialize dropdown options from available wifi networks on start
