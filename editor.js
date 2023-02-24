@@ -1,5 +1,5 @@
 const Blockly = require("blockly");
-const pythonGen = require("blockly/python");
+const pythonGenerator = require("blockly/python");
 
 // https://www.electronjs.org/docs/latest/tutorial/ipc
 const { ipcRenderer } = require("electron");
@@ -52,14 +52,15 @@ updateNetworks();
 // deploy button
 const deployBtn = document.getElementById("dep");
 deployBtn.addEventListener("click", () => {
-    var code = pythonGen.workspaceToCode(workspace);
+    console.log(Blockly)
+     var code = pythonGenerator.workspaceToCode(workspace);
     ipcRenderer.invoke("deploy", "")
 });
 
 // simulate button
 const simBtn = document.getElementById("sim");
 simBtn.addEventListener("click", () => {
-    var code = pythonGen.workspaceToCode(workspace);
+    var code = pythonGenerator.workspaceToCode(workspace);
     ipcRenderer.invoke("simulate", "");
 });
 

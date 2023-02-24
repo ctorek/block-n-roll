@@ -76,12 +76,12 @@ app.whenReady().then(() => {
 
     // deploy button from frontend
     ipcMain.handle("deploy", (event, code) => {
-        console.log("ipc deploy");
+        console.log(code);
     });
 
     // simulate button from frontend
     ipcMain.handle("simulate", (event, code) => {
-        console.log("ipc sim");
+        console.log(code);
     });
 
     // save workspace on window close
