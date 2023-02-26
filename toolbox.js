@@ -61,14 +61,81 @@ Blockly.Blocks["init_pwm_motor"] = {
                 ["Spark Max", "SPARK"],
                 ["Falcon 500", "FALCON"],
                 ["Talon SRX", "TALON"],
-                ["Victor SPX", "VICTOR"]  
+                ["Victor SPX", "VICTOR"]  // TODO: change to pwm
             ]));
     }
 }
 
 /* sensors */
+Blockly.Blocks["init_gyro"] = {
+    init: function() {
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+
+        this.appendDummyInput()
+            .appendField("Init gyro of type ")
+            .appendField(new Blockly.FieldDropdown([
+                ["NavX", "NAVX"]
+                // TODO: more types
+            ]));
+    }
+}
+
+Blockly.Blocks["get_gyro_angle"] = {
+    init: function() {
+        this.setOutput(true, "Number");
+
+        this.appendDummyInput()
+            .appendField("Gyro angle");
+    }
+}
 
 /* controllers */
+Blockly.Blocks["get_raw_axis"] = {
+    init: function() {
+        this.setOutput(true, "Number");
+
+        this.appendDummyInput()
+            .appendField("Get value of joystick ")
+            .appendField(new Blockly.FieldNumber(0, 0, 10, 1), "PORT")
+            .appendField(" axis ")
+            .appendField(new Blockly.FieldNumber(1, 1, 10, 1), "AXIS");
+    }
+}
+
+Blockly.Blocks["while_btn_held"] = {
+    init: function() {
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+
+        this.appendDummyInput()
+            .appendField("While button ")
+            .appendField(new Blockly.FieldNumber(0, 0, 20, 1), "BTN")
+            .appendField(" on joystick ")
+            .appendField(new Blockly.FieldNumber(0, 0, 10, 1), "PORT")
+            .appendField(" is held")
+
+        this.appendStatementInput("DO");
+    }
+}
+
+Blockly.Blocks["when_btn_pressed"] = {
+    init: function() {
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+
+        this.appendDummyInput()
+            .appendField("When button ")
+            .appendField(new Blockly.FieldNumber(0, 0, 20, 1), "BTN")
+            .appendField(" on joystick ")
+            .appendField(new Blockly.FieldNumber(0, 0, 10, 1), "PORT")
+            .appendField(" is pressed")
+
+        this.appendStatementInput("DO");
+    }
+}
+
+/* commands */
 
 // https://developers.google.com/blockly/guides/configure/web/toolbox
 module.exports = {
@@ -139,21 +206,44 @@ module.exports = {
                 {
                     "type": "init_can_motor",
                     "kind": "block"
+                }
+            ]   
+        },
+        {
+            "kind": "category",
+            "name": "Sensors",
+            "contents": [
+                {
+                    "type": "init_gyro",
+                    "kind": "block"
                 },
                 {
-                    "type": "init_pwm_motor",
+                    "type": "get_gyro_angle",
                     "kind": "block"
                 }
             ]
         },
         {
             "kind": "category",
-            "name": "Sensors",
-            "contents": []
+            "name": "Controllers",
+            "contents": [
+                {
+                    "type": "get_raw_axis",
+                    "kind": "block"
+                },
+                {
+                    "type": "while_btn_held",
+                    "kind": "block"
+                },
+                {
+                    "type": "when_btn_pressed",
+                    "kind": "block"
+                }
+            ]
         },
         {
             "kind": "category",
-            "name": "Controllers",
+            "name": "Commands",
             "contents": []
         }
     ]
