@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const wifi = require("node-wifi");
-
 const path = require("path");
+const { exec } = require("child_process");
 const fs = require("node:fs/promises");
 
 // initialize wifi interface
@@ -115,6 +115,33 @@ app.whenReady().then(() => {
 
     // load html view into browser
     window.loadFile("start.html");
+
+    // check if robotpy installed
+    if (process.platform === "win32") {
+        // windows-specific command
+        exec("py -3 -m pip list", (err, stdout, stderr) => {
+            // python install
+            if (err || stderr) {
+                dialog.showErrorBox("Error", "Python 3 install not detected");
+                return;
+            }
+            
+            // robotpy install
+
+        });
+    } else {
+        // linux and mac command
+        exec("pip3 list", (err, stdout, stderr) => {
+            // python install
+            if (err || stderr) {
+                dialog.showErrorBox("Error", "Python 3 install not detected");
+                return;
+            }
+
+            // robotpy install
+
+        });
+    }
 });
 
 // runs when all app windows are closed
