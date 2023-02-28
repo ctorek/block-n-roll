@@ -1,4 +1,5 @@
-const Blockly= require("blockly");
+const Blockly = require("blockly");
+const { pythonGenerator } = require("blockly/python");
 
 // https://developers.google.com/blockly/guides/configure/web/custom-blocks
 
@@ -13,6 +14,9 @@ Blockly.Blocks["robot_init"] = {
             .appendField("Robot Init");
 
         this.appendStatementInput("DO");
+
+        // code generation
+        pythonGenerator["robot_init"] = function(block) {}
     }
 }
 
@@ -26,6 +30,8 @@ Blockly.Blocks["robot_periodic"] = {
             .appendField("Robot Periodic");
 
         this.appendStatementInput("DO");
+
+        pythonGenerator["robot_periodic"] = function(block) {}
     }
 }
 
@@ -44,7 +50,27 @@ Blockly.Blocks["init_can_motor"] = {
                 ["Falcon 500", "FALCON"],
                 ["Talon SRX", "TALON"],
                 ["Victor SPX", "VICTOR"]
-            ]));
+            ]), "TYPE");
+
+        pythonGenerator["init_can_motor"] = function(block) {
+            var instantiation = `motor_can_${block.getFieldValue("CAN_ID")} = `;
+
+            switch (block.getFieldValue("TYPE")) {
+                case "SPARK":
+                    break;
+                case "FALCON":
+                    break;
+                case "TALON":
+                    break;
+                case "VICTOR": 
+                    break;
+                default: 
+                    instantiation += "None";
+                    break;
+            }
+
+            return instantiation;
+        }
     }
 }
 
@@ -62,7 +88,20 @@ Blockly.Blocks["init_pwm_motor"] = {
                 ["Falcon 500", "FALCON"],
                 ["Talon SRX", "TALON"],
                 ["Victor SPX", "VICTOR"]  // TODO: change to pwm
-            ]));
+            ]), "TYPE");
+
+        pythonGenerator["init_pwm_motor"] = function(block) {
+            var instantiation = `motor_pwm_${block.getFieldValue("PWM_PORT")} = `;
+
+            switch (block.getFieldValue("TYPE")) {
+                default:
+                    console.log("unimplemented");
+                    instantiation += "None";
+                    break;
+            }
+
+            return instantiation;
+        }
     }
 }
 
@@ -77,7 +116,20 @@ Blockly.Blocks["init_gyro"] = {
             .appendField(new Blockly.FieldDropdown([
                 ["NavX", "NAVX"]
                 // TODO: more types
-            ]));
+            ]), "TYPE");
+
+        pythonGenerator["init_gyro"] = function(block) {
+            var instantiation = `gyro_${block.getFieldValue("TYPE").toLowerCase()} = `
+
+            switch (block.getFieldValue("TYPE")) {
+                default:
+                    console.log("unimplemented");
+                    instantiation += "None";
+                    break;
+            }
+
+            return instantiation;
+        }
     }
 }
 
@@ -87,6 +139,10 @@ Blockly.Blocks["get_gyro_angle"] = {
 
         this.appendDummyInput()
             .appendField("Gyro angle");
+
+        pythonGenerator["get_gyro_angle"] = function(block) {
+            return ["GYRO_ANGLE", pythonGenerator.ORDER_FUNCTION_CALL];
+        }
     }
 }
 
@@ -100,6 +156,10 @@ Blockly.Blocks["get_raw_axis"] = {
             .appendField(new Blockly.FieldNumber(0, 0, 10, 1), "PORT")
             .appendField(" axis ")
             .appendField(new Blockly.FieldNumber(1, 1, 10, 1), "AXIS");
+
+        pythonGenerator["get_raw_axis"] = function(block) {
+            return ["RAW_AXIS", pythonGenerator.ORDER_FUNCTION_CALL];
+        }
     }
 }
 
@@ -116,6 +176,10 @@ Blockly.Blocks["while_btn_held"] = {
             .appendField(" is held")
 
         this.appendStatementInput("DO");
+
+        pythonGenerator["while_btn_held"] = function(block) {
+            return ["BTN_HOLD", null];
+        }
     }
 }
 
@@ -132,6 +196,10 @@ Blockly.Blocks["when_btn_pressed"] = {
             .appendField(" is pressed")
 
         this.appendStatementInput("DO");
+
+        pythonGenerator["when_btn_pressed"] = function(block) {
+            return ["BTN_PRESS", null];
+        }
     }
 }
 

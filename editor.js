@@ -1,5 +1,5 @@
 const Blockly = require("blockly");
-const pythonGenerator = require("blockly/python");
+const { pythonGenerator } = require("blockly/python");
 
 // https://www.electronjs.org/docs/latest/tutorial/ipc
 const { ipcRenderer } = require("electron");
@@ -52,16 +52,15 @@ updateNetworks();
 // deploy button
 const deployBtn = document.getElementById("dep");
 deployBtn.addEventListener("click", () => {
-    console.log(Blockly)
-     var code = pythonGenerator.workspaceToCode(workspace);
-    ipcRenderer.invoke("deploy", "")
+    var code = pythonGenerator.workspaceToCode(workspace);
+    ipcRenderer.invoke("deploy", code)
 });
 
 // simulate button
 const simBtn = document.getElementById("sim");
 simBtn.addEventListener("click", () => {
     var code = pythonGenerator.workspaceToCode(workspace);
-    ipcRenderer.invoke("simulate", "");
+    ipcRenderer.invoke("simulate", code);
 });
 
 // robot wifi ssid input
