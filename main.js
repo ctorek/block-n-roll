@@ -121,25 +121,33 @@ app.whenReady().then(() => {
         // windows-specific command
         exec("py -3 -m pip list", (err, stdout, stderr) => {
             // python install
-            if (err || stderr) {
-                dialog.showErrorBox("Error", "Python 3 install not detected");
-                return;
+            if (err) {
+                dialog.showErrorBox("Error", "Python 3 install not detected.");
+                //return;
             }
             
             // robotpy install
-
+            var pkg = stdout.split("\n").filter(line => line.includes("robotpy"));
+            if (pkg.length === 0) {
+                dialog.showErrorBox("Error", "RobotPy install not detected.");
+                return;
+            }
         });
     } else {
         // linux and mac command
         exec("pip3 list", (err, stdout, stderr) => {
             // python install
-            if (err || stderr) {
-                dialog.showErrorBox("Error", "Python 3 install not detected");
+            if (err) {
+                dialog.showErrorBox("Error", "Python 3 install not detected.");
                 return;
             }
 
             // robotpy install
-
+            var pkg = stdout.split("\n").filter(line => line.includes("robotpy"));
+            if (pkg.length === 0) {
+                dialog.showErrorBox("Error", "RobotPy install not detected.");
+                return;
+            }
         });
     }
 });
