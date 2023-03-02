@@ -12,6 +12,8 @@ wifi.init({
 let window;
 let blocklyFile;
 
+let robotPyInstalled = false;
+
 app.whenReady().then(() => {
     // open existing project
     ipcMain.handle("open", async (event) => {
@@ -77,11 +79,34 @@ app.whenReady().then(() => {
     // deploy button from frontend
     ipcMain.handle("deploy", (event, code) => {
         console.log(code);
+
+        // check for robotpy install before attempting deploy
+        if (!robotPyInstalled) {
+            dialog.showErrorBox("Deploy Unavailable", "RobotPy install not detected.");
+            return;
+        }
+
+        // different commands used on windows vs linux/mac
+        var command = (process.platform == "win32") ? "py -3" : "python3";
+        exec(`${command} robot.py deploy`, (err, stdout, stderr) => {
+
+        });
     });
 
     // simulate button from frontend
     ipcMain.handle("simulate", (event, code) => {
         console.log(code);
+
+        if (!robotPyInstalled) {
+            dialog.showErrorBox("Simulation Unavailable", "RobotPy install not detected.");
+            return;
+        }
+
+        // different commands used on windows vs linux/mac
+        var command = (process.platform == "win32") ? "py -3" : "python3";
+        exec(`${command} robot.py sim`, (err, stdout, stderr) => {
+
+        });
     });
 
     // save workspace on window close
@@ -123,7 +148,7 @@ app.whenReady().then(() => {
             // python install
             if (err) {
                 dialog.showErrorBox("Error", "Python 3 install not detected.");
-                //return;
+                return;
             }
             
             // robotpy install
@@ -132,6 +157,8 @@ app.whenReady().then(() => {
                 dialog.showErrorBox("Error", "RobotPy install not detected.");
                 return;
             }
+
+            robotPyInstalled = true;
         });
     } else {
         // linux and mac command
@@ -148,6 +175,8 @@ app.whenReady().then(() => {
                 dialog.showErrorBox("Error", "RobotPy install not detected.");
                 return;
             }
+
+            robotPyInstalled = true;
         });
     }
 });

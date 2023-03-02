@@ -31,7 +31,9 @@ Blockly.Blocks["robot_periodic"] = {
 
         this.appendStatementInput("DO");
 
-        pythonGenerator["robot_periodic"] = function(block) {}
+        pythonGenerator["robot_periodic"] = function(block) {
+            
+        }
     }
 }
 
@@ -53,7 +55,8 @@ Blockly.Blocks["init_can_motor"] = {
             ]), "TYPE");
 
         pythonGenerator["init_can_motor"] = function(block) {
-            var instantiation = `motor_can_${block.getFieldValue("CAN_ID")} = `;
+            const can = block.getFieldValue("CAN_ID");
+            var instantiation = `self.motor_can_${can} = `;
 
             switch (block.getFieldValue("TYPE")) {
                 case "SPARK":
@@ -84,16 +87,25 @@ Blockly.Blocks["init_pwm_motor"] = {
             .appendField(new Blockly.FieldNumber(1, 1, 30, 1), "PWM_PORT")
             .appendField(" to type ")
             .appendField(new Blockly.FieldDropdown([
-                ["Spark Max", "SPARK"],
-                ["Falcon 500", "FALCON"],
+                ["Spark", "SPARK"],
                 ["Talon SRX", "TALON"],
-                ["Victor SPX", "VICTOR"]  // TODO: change to pwm
+                ["Jaguar", "JAGUAR"]
             ]), "TYPE");
 
         pythonGenerator["init_pwm_motor"] = function(block) {
-            var instantiation = `motor_pwm_${block.getFieldValue("PWM_PORT")} = `;
+            const pwm = block.getFieldValue("PWM_PORT");
+            var instantiation = `self.motor_pwm_${pwm} = `;
 
             switch (block.getFieldValue("TYPE")) {
+                case "SPARK":
+                    instantiation += `wpilib.Spark(${pwm})`;
+                    break;
+                case "TALON":
+                    instantiation += `wpilib.Talon(${pwm})`;
+                    break;
+                case "JAGUAR":
+                    instantiation += `wpilib.Jaguar(${pwm})`;
+                    break;
                 default:
                     console.log("unimplemented");
                     instantiation += "None";
@@ -119,7 +131,7 @@ Blockly.Blocks["init_gyro"] = {
             ]), "TYPE");
 
         pythonGenerator["init_gyro"] = function(block) {
-            var instantiation = `gyro_${block.getFieldValue("TYPE").toLowerCase()} = `
+            var instantiation = `self.gyro_${block.getFieldValue("TYPE").toLowerCase()} = `
 
             switch (block.getFieldValue("TYPE")) {
                 default:

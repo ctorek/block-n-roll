@@ -63,9 +63,6 @@ simBtn.addEventListener("click", () => {
     ipcRenderer.invoke("simulate", code);
 });
 
-// robot wifi ssid input
-const ssidInput = document.getElementById("ssid");
-
 const refreshBtn = document.getElementById("refresh");
 refreshBtn.addEventListener("click", (event) => {
     event.preventDefault;
@@ -79,7 +76,7 @@ connectBtn.addEventListener("click", (event) => {
     event.preventDefault();
 
     // connect to selected network
-    ipcRenderer.invoke("connect", ssidInput.value);
+    ipcRenderer.invoke("connect", document.getElementById("ssid").value);
 });
 
 // save workspace before window close
