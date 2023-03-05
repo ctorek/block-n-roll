@@ -9,8 +9,7 @@ wifi.init({
     iface: null // ???
 })
 
-let window;
-let blocklyFile;
+let window, blocklyFile;
 
 let robotPyInstalled = false;
 
@@ -89,7 +88,10 @@ app.whenReady().then(() => {
         // different commands used on windows vs linux/mac
         var command = (process.platform == "win32") ? "py -3" : "python3";
         exec(`${command} robot.py deploy`, (err, stdout, stderr) => {
-
+            if (stderr) {
+                dialog.showErrorBox("Deploy Error", stderr);
+                return;
+            }
         });
     });
 
@@ -105,14 +107,15 @@ app.whenReady().then(() => {
         // different commands used on windows vs linux/mac
         var command = (process.platform == "win32") ? "py -3" : "python3";
         exec(`${command} robot.py sim`, (err, stdout, stderr) => {
-
+            if (stderr) {
+                dialog.showErrorBox("Simulation Error", stderr);
+                return;
+            }
         });
     });
 
     // save workspace on window close
-    ipcMain.handle("save", async (event, workspace) => {
-        console.log(workspace);
-        
+    ipcMain.handle("save", async (event, workspace) => {      
         // write workspace to project file
         try {
             await fs.writeFile(blocklyFile, workspace, { encoding: "utf-8" });
