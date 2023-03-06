@@ -132,8 +132,7 @@ app.whenReady().then(() => {
         width: 1000,
         height: 1000,
         webPreferences: {
-            // preload script runs in renderer
-            preload: path.join(__dirname, "preload.js"),
+            // preload: path.join(__dirname, "preload.js"),
 
             // allow using npm modules in renderer
             nodeIntegration: true,
