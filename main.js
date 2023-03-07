@@ -76,8 +76,16 @@ app.whenReady().then(() => {
     });
 
     // deploy button from frontend
-    ipcMain.handle("deploy", (event, code) => {
+    ipcMain.handle("deploy", async (event, code) => {
         console.log(code);
+
+        // write code to python file
+        try {
+            await fs.writeFile(path.join(path.dirname(blocklyFile), "generated.py"), code, { encoding: "utf-8" });
+        } catch (err) {
+            console.error(err);
+            return;
+        }
 
         // check for robotpy install before attempting deploy
         if (!robotPyInstalled) {
@@ -96,8 +104,16 @@ app.whenReady().then(() => {
     });
 
     // simulate button from frontend
-    ipcMain.handle("simulate", (event, code) => {
+    ipcMain.handle("simulate", async (event, code) => {
         console.log(code);
+
+        // write code to python file
+        try {
+            await fs.writeFile(path.join(path.dirname(blocklyFile), "generated.py"), code, { encoding: "utf-8" });
+        } catch (err) {
+            console.error(err);
+            return;
+        }
 
         if (!robotPyInstalled) {
             dialog.showErrorBox("Simulation Unavailable", "RobotPy install not detected.");

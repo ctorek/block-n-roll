@@ -2,11 +2,19 @@
 
 Tool for programming FRC robots using Blockly, intended to teach the basics of robot control without requiring programming languages like Java, C++, or Python.
 
-### Usage
+> This is intended for fun and educational purposes. Please don't try to use this for a competition robot.
 
-### Building
+### Usage Instructions
+
+### Build Instructions
 
 ### Design
+
+The frontend of this project uses [Blockly](https://developers.google.com/blockly/), a JavaScript library for creating editors for programs made of code blocks. This was selected due to its familiarity and its ability to generate code in Python.
+
+The application was built using [Electron](https://www.electronjs.org/), due to the requirements of using a web-based frontend for Blockly as well as being a desktop application to be able to interface with the robot.
+
+The frontend generates code to fit the specifications of the [RobotPy](https://robotpy.readthedocs.io/en/stable/) library and the backend uses the RobotPy command-line tools to deploy or simulate the generated robot code.
 
 ### Structure
 
