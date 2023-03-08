@@ -13,6 +13,35 @@ let window, blocklyFile;
 
 let robotPyInstalled = false;
 
+async function writeGeneratedCode(code) {
+    // write code to python file
+    try {
+        // make directory for generated code
+        try {
+            // check if directory exists
+            await fs.access(path.join(path.dirname(blocklyFile), "python"));
+        } catch (err) {
+            // create it if it doesn't exist
+            await fs.mkdir(path.join(path.dirname(blocklyFile), "python"));
+        }
+
+        // write blockly-generated code to file
+        await fs.writeFile(path.join(path.dirname(blocklyFile), "python", "generated.py"), code, { encoding: "utf-8" });
+
+        // copy robot.py file to project directory for deploy
+        await fs.copyFile(
+            // current directory
+            path.join(__dirname, "robot.py"), 
+            // project directory
+            path.join(path.dirname(blocklyFile), "python", "robot.py")
+        );
+
+    } catch (err) {
+        console.error(err);
+        return;
+    }
+}
+
 app.whenReady().then(() => {
     // open existing project
     ipcMain.handle("open", async (event) => {
@@ -22,8 +51,17 @@ app.whenReady().then(() => {
         });
         
         // don't continue to editor if no project is selected
-        if (result.filePaths[0] == null) return;
+        if (result.filePaths[0] == null) {
+            dialog.showErrorBox("Error", "No file selected.");
+            return;
+        }
         blocklyFile = result.filePaths[0];
+
+        // if a project is selected ensure it is a json file
+        if (!blocklyFile.endsWith("json")) {
+            dialog.showErrorBox("Error", "File selected is not a JSON file.");
+            return;
+        }
 
         // perform some file io and get blockly serialized data
         let workspace;
@@ -31,6 +69,7 @@ app.whenReady().then(() => {
             workspace = await fs.readFile(blocklyFile, { encoding: "utf-8" });
         } catch (err) {
             console.error(err);
+            dialog.showErrorBox("Open Error", err);
             
             // do not open editor if data does not load
             return;
@@ -80,12 +119,7 @@ app.whenReady().then(() => {
         console.log(code);
 
         // write code to python file
-        try {
-            await fs.writeFile(path.join(path.dirname(blocklyFile), "generated.py"), code, { encoding: "utf-8" });
-        } catch (err) {
-            console.error(err);
-            return;
-        }
+        await writeGeneratedCode(code);
 
         // check for robotpy install before attempting deploy
         if (!robotPyInstalled) {
@@ -107,13 +141,7 @@ app.whenReady().then(() => {
     ipcMain.handle("simulate", async (event, code) => {
         console.log(code);
 
-        // write code to python file
-        try {
-            await fs.writeFile(path.join(path.dirname(blocklyFile), "generated.py"), code, { encoding: "utf-8" });
-        } catch (err) {
-            console.error(err);
-            return;
-        }
+        await writeGeneratedCode(code);
 
         if (!robotPyInstalled) {
             dialog.showErrorBox("Simulation Unavailable", "RobotPy install not detected.");
@@ -137,6 +165,8 @@ app.whenReady().then(() => {
             await fs.writeFile(blocklyFile, workspace, { encoding: "utf-8" });
         } catch (err) {
             console.error(err);
+            dialog.showErrorBox("Save Error", err);
+
             return false;
         }
 
