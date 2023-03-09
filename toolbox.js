@@ -147,7 +147,8 @@ Blockly.Blocks["init_gyro"] = {
         this.appendDummyInput()
             .appendField("Init gyro of type ")
             .appendField(new Blockly.FieldDropdown([
-                ["NavX", "NAVX"]
+                ["ADIS16448 IMU", "adis16448_imu"],
+                ["ADIS16470 IMU", "adis16470_imu"]
                 // TODO: more types
             ]), "TYPE");
 
@@ -174,17 +175,59 @@ Blockly.Blocks["get_gyro_angle"] = {
         this.appendDummyInput()
             .appendField("Gyro angle from ")
             .appendField(new Blockly.FieldDropdown([
-                ["NavX", "NAVX"]
-            ]));
+                ["NavX", "navx"]
+            ]), "TYPE");
 
         pythonGenerator["get_gyro_angle"] = function(block) {
-            var code = "self.gyro_navx.get()";
+            const type = block.getFieldValue("TYPE");
+
+            var code = `self.gyro_${type}.get()`;
             return [code, pythonGenerator.ORDER_FUNCTION_CALL];
         }
     }
 }
 
 /* controllers */
+Blockly.Blocks["init_hid"] = {
+    init: function() {
+        this.setOutput(false);
+
+        this.setNextStatement(true);
+        this.setPreviousStatement(true);
+
+        this.appendDummyInput()
+            .appendField("Initialize HID device on port ")
+            .appendField(new Blockly.FieldNumber(0, 0, 10, 1), "PORT");
+
+        pythonGenerator["init_hid"] = function(block) {
+            const port = block.getFieldValue("PORT");
+
+            var code = `self.hid_${port} = wpilib.interfaces.GenericHID(${port})`;
+            return code;
+        }
+    }
+}
+
+Blockly.Blocks["get_button"] = {
+    init: function() {
+        this.setOutput(true, "Boolean");
+
+        this.appendDummyInput()
+            .appendField("Get value of button ")
+            .appendField(new Blockly.FieldNumber(0, 0, 30, 1), "BTN")
+            .appendField(" on HID ")
+            .appendField(new Blockly.FieldNumber(0, 0, 10, 1), "PORT");
+
+        pythonGenerator["get_button"] = function(block) {
+            const btn = block.getFieldValue("BTN");
+            const port = block.getFieldValue("PORT");
+
+            var code = `self.hid_${port}`;
+            return code;
+        }
+    }
+}
+
 Blockly.Blocks["get_raw_axis"] = {
     init: function() {
         this.setOutput(true, "Number");
@@ -236,7 +279,7 @@ Blockly.Blocks["when_btn_pressed"] = {
         this.appendStatementInput("DO");
 
         pythonGenerator["when_btn_pressed"] = function(block) {
-            return ["BTN_PRESS", null];
+            return "BTN_PRESS";
         }
     }
 }
@@ -353,6 +396,10 @@ module.exports = {
             "kind": "category",
             "name": "Controllers",
             "contents": [
+                {
+                    "type": "init_hid",
+                    "kind": "block"
+                },
                 {
                     "type": "get_raw_axis",
                     "kind": "block"
