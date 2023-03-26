@@ -14,4 +14,10 @@ document.getElementById("create").addEventListener("click", async () => {
     ipcRenderer.invoke("create");
 
     // backend automatically redirects to editor
-})
+});
+
+// open a blank editor
+document.getElementById("edit").addEventListener("click", () => {
+    // open the editor
+    window.location.href = "editor.html";
+});

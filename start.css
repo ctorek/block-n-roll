@@ -12,19 +12,25 @@ body {
     row-gap: 15px;
 }
 
-#new, #load {
+#new, #load, #play {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     column-gap: 10px;
     padding: 10px;
+
+    text-align: center;
+
+    max-width: 70%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-#new button, #load button {
+#new button, #load button, #play button{
     max-height: 20px;
 }
 
-#load {
+#play {
     margin-bottom: auto;
 }
 

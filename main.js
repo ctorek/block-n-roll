@@ -195,14 +195,20 @@ app.whenReady().then(() => {
         exec("py -3 -m pip list", (err, stdout, stderr) => {
             // python install
             if (err) {
-                dialog.showErrorBox("Error", "Python 3 install not detected.");
+                dialog.showMessageBox(window, {
+                    message: "Python 3 install not detected.",
+                    type: "warning"
+                });
                 return;
             }
             
             // robotpy install
             var pkg = stdout.split("\n").filter(line => line.includes("robotpy"));
             if (pkg.length === 0) {
-                dialog.showErrorBox("Error", "RobotPy install not detected.");
+                dialog.showMessageBox(window, {
+                    message: "RobotPy install not detected.",
+                    type: "warning"
+                });
                 return;
             }
 
@@ -213,14 +219,20 @@ app.whenReady().then(() => {
         exec("pip3 list", (err, stdout, stderr) => {
             // python install
             if (err) {
-                dialog.showErrorBox("Error", "Python 3 install not detected.");
+                dialog.showMessageBox(window, {
+                    message: "Python 3 install not detected.",
+                    type: "warning"
+                });
                 return;
             }
 
             // robotpy install
             var pkg = stdout.split("\n").filter(line => line.includes("robotpy"));
             if (pkg.length === 0) {
-                dialog.showErrorBox("Error", "RobotPy install not detected.");
+                dialog.showMessageBox(window, {
+                    message: "RobotPy install not detected.",
+                    type: "warning"
+                });
                 return;
             }
 
