@@ -1,13 +1,7 @@
 const { app, BrowserWindow, ipcMain, dialog } = require("electron");
-const wifi = require("node-wifi");
 const path = require("path");
 const { exec } = require("child_process");
 const fs = require("node:fs/promises");
-
-// initialize wifi interface
-wifi.init({
-    iface: null // ???
-})
 
 let window, blocklyFile;
 
@@ -142,8 +136,20 @@ app.whenReady().then(() => {
         });
     });
 
-    // save workspace on window close
-    ipcMain.handle("save", async (event, workspace) => {      
+    // save workspace on window close or save button
+    ipcMain.handle("save", async (event, workspace) => {
+        if (blocklyFile == undefined) {
+            var result = await dialog.showOpenDialog(window, {
+                properties: ["openDirectory"]
+            });
+    
+            // don't redirect if no folder selected
+            if (result.filePaths[0] == null) return;
+    
+            // set project location for save
+            blocklyFile = path.join(result.filePaths[0], "blockly.json");
+        }
+
         // write workspace to project file
         try {
             await fs.writeFile(blocklyFile, workspace, { encoding: "utf-8" });

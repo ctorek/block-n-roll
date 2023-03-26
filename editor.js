@@ -44,4 +44,4 @@ const saveBtn = document.getElementById("save");
 saveBtn.addEventListener("click", save);
 
 // save workspace before window close
-window.addEventListener("beforeunload", save)
+window.addEventListener("beforeunload", save);
