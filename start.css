@@ -9,4 +9,35 @@ body {
 
     display: flex;
     flex-direction: column;
+    row-gap: 15px;
+}
+
+#new, #load {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 10px;
+    padding: 10px;
+}
+
+#new button, #load button {
+    max-height: 20px;
+}
+
+#load {
+    margin-bottom: auto;
+}
+
+.header {
+    padding: 10px;
+
+    max-height: 10%;
+}
+
+#footer {
+    display: flex;
+    flex-direction: row;
+
+    padding: 10px;
+    column-gap: 10px;
 }
