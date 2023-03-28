@@ -11,6 +11,8 @@ function generateEventBlock(mode, state) {
             this.setPreviousStatement(false);
             this.setNextStatement(false);
 
+            this.setColour(46);
+
             var modeName = mode[0].toUpperCase() + mode.substring(1);
             var stateName = state[0].toUpperCase() + state.substring(1);
 
@@ -45,6 +47,8 @@ Blockly.Blocks["init_can_motor"] = {
     init: function() {
         this.setPreviousStatement(true);
         this.setNextStatement(true);
+
+        this.setColour(260);
 
         this.appendDummyInput()
             .appendField("Init motor on CAN ")
@@ -81,6 +85,8 @@ Blockly.Blocks["init_pwm_motor"] = {
     init: function() {
         this.setPreviousStatement(true);
         this.setNextStatement(true);
+
+        this.setColour(260);
 
         this.appendDummyInput()
             .appendField("Init motor on PWM ")
@@ -123,6 +129,8 @@ Blockly.Blocks["set_pwm"] = {
         this.setPreviousStatement(true);
         this.setNextStatement(true);
 
+        this.setColour(260);
+
         this.appendDummyInput()
             .appendField("Set PWM ")
             .appendField(new Blockly.FieldNumber(1, 1, 30, 1), "ID")
@@ -143,6 +151,8 @@ Blockly.Blocks["init_gyro"] = {
     init: function() {
         this.setPreviousStatement(true);
         this.setNextStatement(true);
+
+        this.setColour(150);
 
         this.appendDummyInput()
             .appendField("Init gyro of type ")
@@ -172,6 +182,8 @@ Blockly.Blocks["get_gyro_angle"] = {
     init: function() {
         this.setOutput(true, "Number");
 
+        this.setColour(150);
+
         this.appendDummyInput()
             .appendField("Gyro angle from ")
             .appendField(new Blockly.FieldDropdown([
@@ -195,6 +207,8 @@ Blockly.Blocks["init_hid"] = {
         this.setNextStatement(true);
         this.setPreviousStatement(true);
 
+        this.setColour(340);
+
         this.appendDummyInput()
             .appendField("Initialize HID device on port ")
             .appendField(new Blockly.FieldNumber(0, 0, 10, 1), "PORT");
@@ -212,6 +226,8 @@ Blockly.Blocks["get_button"] = {
     init: function() {
         this.setOutput(true, "Boolean");
 
+        this.setColour(340);
+
         this.appendDummyInput()
             .appendField("Get value of button ")
             .appendField(new Blockly.FieldNumber(0, 0, 30, 1), "BTN")
@@ -222,7 +238,7 @@ Blockly.Blocks["get_button"] = {
             const btn = block.getFieldValue("BTN");
             const port = block.getFieldValue("PORT");
 
-            var code = `self.hid_${port}`;
+            var code = `self.hid_${port}.getRawButton(${btn})`;
             return code;
         }
     }
@@ -231,6 +247,8 @@ Blockly.Blocks["get_button"] = {
 Blockly.Blocks["get_raw_axis"] = {
     init: function() {
         this.setOutput(true, "Number");
+
+        this.setColour(340);
 
         this.appendDummyInput()
             .appendField("Get value of joystick ")
@@ -248,6 +266,8 @@ Blockly.Blocks["while_btn_held"] = {
     init: function() {
         this.setPreviousStatement(true);
         this.setNextStatement(true);
+
+        this.setColour(340);
 
         this.appendDummyInput()
             .appendField("While button ")
@@ -268,6 +288,8 @@ Blockly.Blocks["when_btn_pressed"] = {
     init: function() {
         this.setPreviousStatement(true);
         this.setNextStatement(true);
+
+        this.setColour(340);
 
         this.appendDummyInput()
             .appendField("When button ")
