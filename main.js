@@ -97,7 +97,12 @@ app.whenReady().then(() => {
         console.log(code);
 
         // write code to python file
-        await writeGeneratedCode(code);
+        if(blocklyFile) {
+            await writeGeneratedCode(code);
+        } else {
+            dialog.showErrorBox("Deploy Unavailable", "Project directory not open.");
+            return;
+        }
 
         // check for robotpy install before attempting deploy
         if (!robotPyInstalled) {
@@ -119,7 +124,13 @@ app.whenReady().then(() => {
     ipcMain.handle("simulate", async (event, code) => {
         console.log(code);
 
-        await writeGeneratedCode(code);
+        // write code to python file
+        if(blocklyFile) {
+            await writeGeneratedCode(code);
+        } else {
+            dialog.showErrorBox("Simulation Unavailable", "Project directory not open.");
+            return;
+        }
 
         if (!robotPyInstalled) {
             dialog.showErrorBox("Simulation Unavailable", "RobotPy install not detected.");

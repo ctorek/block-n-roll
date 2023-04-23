@@ -216,7 +216,7 @@ Blockly.Blocks["init_hid"] = {
         pythonGenerator["init_hid"] = function(block) {
             const port = block.getFieldValue("PORT");
 
-            var code = `self.hid_${port} = wpilib.interfaces.GenericHID(${port})`;
+            var code = `self.hid_${port} = wpilib.interfaces.GenericHID(${port})\n`;
             return code;
         }
     }
@@ -257,7 +257,11 @@ Blockly.Blocks["get_raw_axis"] = {
             .appendField(new Blockly.FieldNumber(1, 1, 10, 1), "AXIS");
 
         pythonGenerator["get_raw_axis"] = function(block) {
-            return ["RAW_AXIS", pythonGenerator.ORDER_FUNCTION_CALL];
+            const port = block.getFieldValue("PORT");
+            const axis = block.getFieldValue("AXIS");
+
+            var code = `self.hid_${port}.getRawAxis(${axis})`;
+            return [code, pythonGenerator.ORDER_FUNCTION_CALL];
         }
     }
 }
@@ -306,7 +310,22 @@ Blockly.Blocks["when_btn_pressed"] = {
     }
 }
 
-/* commands */
+/* telemetry */
+Blockly.Blocks["print_riolog"] = {
+    init: function() {
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+
+        this.appendDummyInput()
+            .appendField("Print message to Riolog ")
+            .appendField(new Blockly.FieldTextInput("message"), "MSG");
+
+        pythonGenerator["print_riolog"] = function(block) {
+            const msg = block.getFieldValue("MSG");
+            return `print("${msg}")\n`;
+        }
+    }
+}
 
 // https://developers.google.com/blockly/guides/configure/web/toolbox
 module.exports = {
@@ -438,8 +457,13 @@ module.exports = {
         },
         {
             "kind": "category",
-            "name": "Commands",
-            "contents": []
+            "name": "Telemetry",
+            "contents": [
+                {
+                    "type": "print_riolog",
+                    "kind": "block"
+                }
+            ]
         }
     ]
 }
